@@ -3,11 +3,17 @@ import { Component } from 'preact';
 
 export default class App extends Component {
 	render() {
-		var today = new Date(Date.now()).toDateString();
+		var video = document.getElementById('video');
+		if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+			navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+			video.src = window.URL.createObjectURL(stream);
+			video.play();
+			});
+		}
+
 		return (
-			<div>
-				<h1>{today}</h1>
-			</div>
+			<center><video id="video" width="640" height="480" autoplay></video></center>
 		);
+
 	}
 }
