@@ -48,14 +48,14 @@ export default class App extends Component {
 			img.setAttribute('src', dataURL);
 		
 			//append img in container div
-			document.getElementByClass('thumbnailContainer').appendChild(img);
+			document.getElementByClass('canvas').appendChild(img);
 		}
 	}
 
 
 	render() {
 		return (
-			<div class = "thumbnailContainer">
+			<div class="thumbnailContainer">
 				<center>
 					<video id="video" width="640" height="480" autoplay />
 					<canvas class="canvas" />
