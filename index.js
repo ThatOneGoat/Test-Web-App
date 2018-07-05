@@ -10,7 +10,9 @@ export default class App extends Component {
 			 video.play();
 			});
 		}
+
 		let i = 0;
+
 		video.addEventListener('loadeddata', function() {
 			this.currentTime = i;
 		});
@@ -46,17 +48,19 @@ export default class App extends Component {
 			img.setAttribute('src', dataURL);
 		
 			//append img in container div
-			document.getElementById('thumbnailContainer').appendChild(img);
+			document.getElementByClass('thumbnailContainer').appendChild(img);
 		}
 	}
 
 
 	render() {
 		return (
-			<center><video id="video" width="640" height="480" autoplay />
-			<canvas class="canvas" />
-			
-			</center>
+			<div class = "thumbnailContainer">
+				<center>
+					<video id="video" width="640" height="480" autoplay />
+					<canvas class="canvas" />
+				</center>
+			</div>
 		);
 
 	}
