@@ -6,3 +6,12 @@ html, body {
 h1 {
 	text-align: center;
 }
+
+#video {
+	justify-content: flex-end;
+	align-items: flex-end;
+}
+
+img[src="#"] {
+    display: none;
+}
