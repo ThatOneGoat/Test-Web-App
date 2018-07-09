@@ -71,10 +71,5 @@ export default class App extends Component {
 				<p class="actions"><button id="capture">Capture</button></p>
 			</div>
 		);
-
 	}
-
-	/* <center>
-					<video id="video" width="640" height="480" autoplay />
-				</center> */
 }
