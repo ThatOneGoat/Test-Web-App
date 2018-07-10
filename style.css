@@ -15,3 +15,15 @@ h1 {
 img[src="#"] {
     display: none;
 }
+
+.tracking-container {
+	position: relative;
+	width: 640px;
+	height: 480px;
+}
+
+.tracking-container canvas {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
