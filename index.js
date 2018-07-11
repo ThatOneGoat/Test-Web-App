@@ -2,10 +2,10 @@ import './style';
 import { Component } from 'preact';
 
 
-import './lib/tracking'; //
-import './lib/face'; //
-import './lib/mouth'; //
-import  './lib/eye'; // 
+import './lib/tracking';
+import './lib/face';
+import './lib/mouth';
+import  './lib/eye';
 
 
 export default class App extends Component {
@@ -17,11 +17,9 @@ export default class App extends Component {
 
 	componentDidMount(){
 		let captured = false;
-		let video = document.getElementById('video');
+		let video = document.getElementById('video'); //THis is used when face tracking is off and only the webcam is being instantiated
 		let trackingCanvas = document.querySelector('.canvas2'); //
 
-		//var mediaStreamTrack;
-		//var imageCapture;
 		let mediaStream;
 
 		function stopVideo(stream) {
@@ -53,7 +51,9 @@ export default class App extends Component {
 			document.querySelector('#grid').setAttribute('src', snapshot);
 		}
 
-		// if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+
+		//Starting Webcam without using face tracking
+		// if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) { 
 		// 	navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
 		// 		mediaStream = stream;
 		// 		video.src = window.URL.createObjectURL(stream);
@@ -76,24 +76,23 @@ export default class App extends Component {
 			stopVideo(mediaStream);
 		});
 
-		let tracker = new tracking.ObjectTracker('face'); //
+		let tracker = new tracking.ObjectTracker('face'); 
 
-		tracker.setInitialScale(4); //
-		tracker.setStepSize(2); //
-		tracker.setEdgesDensity(0.1); //
-		tracking.track('#video', tracker, {camera : true}); //
+		tracker.setInitialScale(4);
+		tracker.setStepSize(0.1);
+		tracker.setEdgesDensity(0.1);
+		tracking.track('#video', tracker, {camera : true});
 
-		tracker.on('track', function(event) { //
-
-		trackingCanvas.getContext('2d').clearRect(0, 0, trackingCanvas.width, trackingCanvas.height); //
-		event.data.forEach(function(rect) { //
-			trackingCanvas.getContext('2d').strokeStyle = '#a64ceb'; //
-			trackingCanvas.getContext('2d').strokeRect(rect.x, rect.y, rect.width, rect.height); //
-			trackingCanvas.getContext('2d').font = '11px Helvetica'; //
-			trackingCanvas.getContext('2d').fillStyle = "#fff"; //
-			trackingCanvas.getContext('2d').fillText('x: ' + rect.x + 'px', rect.x + rect.width + 5, rect.y + 11); //
-			trackingCanvas.getContext('2d').fillText('y: ' + rect.y + 'px', rect.x + rect.width + 5, rect.y + 22); //
-        	}); //
+		tracker.on('track', function(event) {
+			trackingCanvas.getContext('2d').clearRect(0, 0, trackingCanvas.width, trackingCanvas.height);
+			event.data.forEach(function(rect) {
+				trackingCanvas.getContext('2d').strokeStyle = '#a64ceb';
+				trackingCanvas.getContext('2d').strokeRect(rect.x, rect.y, rect.width, rect.height);
+				trackingCanvas.getContext('2d').font = '11px Helvetica';
+				trackingCanvas.getContext('2d').fillStyle = "#fff";
+				trackingCanvas.getContext('2d').fillText('x: ' + rect.x + 'px', rect.x + rect.width + 5, rect.y + 11);
+				trackingCanvas.getContext('2d').fillText('y: ' + rect.y + 'px', rect.x + rect.width + 5, rect.y + 22);
+        	}); 
       	}); 
 	}
 
