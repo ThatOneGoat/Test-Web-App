@@ -56,7 +56,7 @@ export default class App extends Component {
 
 
 		let processImage = (image) => { //process an image (get a JSON file)
-			console.log(image); //test
+			//console.log(image); //test
 
 			var sourceImageUrl = image
 
@@ -159,6 +159,11 @@ export default class App extends Component {
 			});
 		}
 
+		const ticker = setInterval(() => {
+			console.log("ticking");
+			capture();
+		}, 5000);
+
 		document.getElementById('capture').addEventListener('click', () => { //capture click
 			if (!captured) {
 				capture();
@@ -192,6 +197,10 @@ export default class App extends Component {
 				trackingCanvas.getContext('2d').fillText('y: ' + rect.y + 'px', rect.x + rect.width + 5, rect.y + 22);
 			});
 		});
+
+		//document.addEventListener("seeking", () => {
+
+		//});
 	}
 
 	render() {
