@@ -41,6 +41,8 @@ export default class App extends Component {
 
 		let faceJS = new FaceJS(key1, "westcentralus"); //Declaration of new wrapper object
 
+		let ticker;
+
 		function compare(calibrated, current) { //creating a hardcoded slouch detector (move to machine learning?)
 			if (abs(current.x - calibrated.x) > 100) {
 				console.log("you slouch");
@@ -111,7 +113,7 @@ export default class App extends Component {
 		}
 
 		//captures a frame of a stream
-		function capture() {
+		function capture(mode) {
 			// add canvas element
 			let canvas = document.createElement('canvas');
 
@@ -131,7 +133,12 @@ export default class App extends Component {
 			// update grid picture source
 			document.querySelector('#grid').setAttribute('src', snapshot);
 
-			if (counter == 0) { //if first capture click, get a calibrated face ID
+			sendToProcess(snapshot, mode);
+		}
+
+		function sendToProcess(snapshot, calibrate) {
+			if (calibrate === "calibrating" & counter < 1) {
+				//if first capture click, get a calibrated face ID
 				calibrated = snapshot;
 				processImage(calibrated).then(id => {
 					faceCalibrated = id;
@@ -147,7 +154,6 @@ export default class App extends Component {
 			counter++; //increment counter after each call
 		}
 
-
 		//Starting Webcam without using face tracking
 		if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 			navigator.mediaDevices.getUserMedia({
@@ -158,11 +164,6 @@ export default class App extends Component {
 				video.play();
 			});
 		}
-
-		const ticker = setInterval(() => {
-			console.log("ticking");
-			capture();
-		}, 5000);
 
 		document.getElementById('capture').addEventListener('click', () => { //capture click
 			if (!captured) {
@@ -175,6 +176,19 @@ export default class App extends Component {
 
 		document.querySelector('.Done').addEventListener('click', () => { //done click
 			stopVideo(mediaStream);
+		});
+
+		document.querySelector('.calibrate').addEventListener('click', () => {
+			if (counter < 1) {
+				capture("calibrating");
+				counter = 1;
+				ticker = setInterval(() => {
+					console.log("ticking");
+					capture("current");
+				}, 5000);
+			} else {
+
+			}
 		});
 
 		let tracker = new tracking.ObjectTracker('face');
@@ -197,10 +211,6 @@ export default class App extends Component {
 				trackingCanvas.getContext('2d').fillText('y: ' + rect.y + 'px', rect.x + rect.width + 5, rect.y + 22);
 			});
 		});
-
-		//document.addEventListener("seeking", () => {
-
-		//});
 	}
 
 	render() {
@@ -220,6 +230,7 @@ export default class App extends Component {
 				<img id="grid" src="#" />
 				<p class="actions" > <button id="capture" > Capture </button></p>
 				<p class="button" > <button class="Done" > Done </button></p>
+				<p class="button" > <button class="calibrate" > Calibrate </button></p>
 			</div>
 		);
 	}
